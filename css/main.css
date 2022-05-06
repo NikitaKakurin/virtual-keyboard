@@ -369,7 +369,8 @@ body {
   justify-content: normal;
   flex-wrap: nowrap;
   row-gap: 10px;
-  padding: 10px 0;
+  padding: 10px 10px;
+  background-color: #888888;
 }
 
 .keyboard__row {
@@ -381,6 +382,17 @@ body {
   column-gap: 10px;
 }
 
+.keyboard__blank {
+  width: 100%;
+  padding: 20px;
+  border: 3px solid grey;
+}
+
+.keyboard__textarea {
+  width: 100%;
+  height: 300px;
+}
+
 .key {
   display: flex;
   flex-direction: column;
@@ -389,9 +401,17 @@ body {
   flex-wrap: nowrap;
   width: 40px;
   height: 40px;
-  border: 2px solid grey;
   border-radius: 5px;
-  background-color: grey;
+  color: #f4f4f2;
+  background-color: gray;
+  border-radius: 5px;
+  box-shadow: 0px 0px 8px 6px rgba(34, 60, 80, 0.79);
+  cursor: pointer;
+  transition: order 0.5s, justify-content 0.5s;
+}
+.key:hover {
+  position: relative;
+  animation: key-hover 0.3s ease infinite;
 }
 .key__additional {
   padding-left: 4px;
@@ -408,21 +428,59 @@ body {
   justify-content: center;
   flex-wrap: nowrap;
   font-weight: 700;
-  text-transform: capitalize;
   height: 100%;
 }
-
-.key-optional {
+.key .main {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: nowrap;
+  font-weight: 700;
+  order: 2;
+}
+.key .additional {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  padding-left: 4px;
+  order: -1;
+}
+
+.key-arrow,
+.key-optional {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   flex-wrap: nowrap;
   background-color: #1c1c1c;
   color: #ffffff;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 8px 6px rgba(34, 60, 80, 0.79);
+  cursor: pointer;
 }
-.key-optional .key__main {
-  width: 100%;
+.key-arrow:hover,
+.key-optional:hover {
+  position: relative;
+  animation: key-hover 0.3s ease infinite;
+}
+
+.key-space {
+  height: 40px;
+  width: 314px;
+  background-color: grey;
+  border-radius: 5px;
+  box-shadow: 0px 0px 8px 6px rgba(34, 60, 80, 0.79);
+  cursor: pointer;
+}
+.key-space:hover {
+  position: relative;
+  animation: key-hover 0.3s ease infinite;
 }
 
 .key-XX {
@@ -434,30 +492,40 @@ body {
 }
 
 .key-L {
-  width: 50px;
+  width: 60px;
 }
 
 .key-M {
-  width: 44px;
+  width: 52px;
 }
 
 .key-S {
   width: 40px;
 }
 
-.key-space {
-  width: 310px;
+.key-push {
+  box-shadow: 0px 0px 4px 4px rgba(34, 60, 80, 0.79);
+  background-color: #676767;
+}
+.key-push:hover {
+  position: static;
+  animation: none;
+}
+.key-push:hover {
+  position: static;
+  animation: none;
 }
 
-.keyboard-blank {
-  width: 100%;
-  padding: 20px;
-  border: 3px solid grey;
+@keyframes key-hover {
+  from {
+    top: 0px;
+  }
+  to {
+    top: -2px;
+  }
 }
-
-#blank {
-  width: 100%;
-  height: 300px;
+.capitalize {
+  text-transform: capitalize;
 }
 
 /*# sourceMappingURL=main.css.map */

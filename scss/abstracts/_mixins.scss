@@ -5,3 +5,20 @@
     justify-content: $j_content;
     flex-wrap: $wrap;
 }
+
+@mixin key-hover {
+    &:hover{
+        position: relative;
+        animation: key-hover 0.3s ease infinite;
+    }
+}
+
+@mixin key-push {
+    &:hover{
+        position: static;
+        animation: none;
+    }
+        box-shadow: $key-shadow-push;
+        background-color: darken($color:$key-bgcolor, $amount: 10%);
+    
+}

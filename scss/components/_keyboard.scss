@@ -2,7 +2,8 @@
     width: 100%;
     @include flex($direction:column);
     row-gap: 10px;
-    padding: 10px 0;
+    padding: 10px 10px;
+    background-color: #888888;
 }
 
 .keyboard__row{
@@ -10,57 +11,4 @@
     column-gap:10px
 }
 
-.key{
-    @include flex($direction:column);
-    width: 40px;
-    height: 40px;
-    border: 2px solid grey;
-    border-radius: 5px;
-    background-color: grey;
 
-    &__additional{
-        padding-left: 4px;
-        @include flex($align:center, $j_content:flex-start);
-    }
-
-    &__main{
-        @include flex($align:center, $j_content:center);
-        font-weight: 700;
-        text-transform: capitalize;
-        height: 100%;
-    }
-}
-
-
-
-.key-optional{
-    @include flex($j_content: space-between, $align:center);
-    background-color: #1c1c1c;
-    color: #ffffff;    
-    .key__main{
-        width: 100%;
-    }
-}
-.key-XX{
-    width: 100px;
-}
-
-.key-XL{
-    width: 84px;
-}
-
-.key-L{
-    width: 50px;
-}
-
-.key-M{
-    width: 44px;
-}
-
-.key-S{
-    width: 40px;
-}
-
-.key-space{
-    width: 310px;
-}
