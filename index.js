@@ -6,13 +6,30 @@ const KEYBOARD = new Keyboard();
 const CONTAINER = createOneElement('div', 'container');
 CONTAINER.append(KEYBOARD.getKeyboard());
 document.body.append(CONTAINER);
+let mouseDownTarget = null;
+
+console.log(KEYBOARD.textarea.rows);
 
 function handleKeyDown(event) {
-  event.preventDefault();
-  const keyCode = event.code;
+  let keyCode;
+
+  if (event.type === 'keydown') {
+    keyCode = event.code;
+    event.preventDefault();
+  } else if (event.type === 'mousedown') {
+    const keyContainer = event.target.closest('[data-code]');
+    if (!keyContainer) {
+      return;
+    }
+    keyCode = keyContainer.dataset.code;
+    mouseDownTarget = keyCode;
+    event.preventDefault();
+  }
+
   if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
     KEYBOARD.handlePushShift();
   }
+
   if (keyCode === 'CapsLock') {
     KEYBOARD.handlePushCapsLock();
     if (KEYBOARD.isCapsLockPush) {
@@ -20,8 +37,9 @@ function handleKeyDown(event) {
     } else {
       KEYBOARD.handleKeyUp(keyCode);
     }
-    return false;
+    return;
   }
+
   if (keyCode === 'ControlLeft' || keyCode === 'ControlRight') {
     KEYBOARD.handlePushCtrl();
   }
@@ -30,28 +48,43 @@ function handleKeyDown(event) {
   }
   KEYBOARD.handleKeyDown(keyCode);
   KEYBOARD.print(keyCode);
-  return false;
 }
 
 function handleKeyUp(event) {
-  event.preventDefault();
-  const keyCode = event.code;
+  let keyCode;
+
+  if (event.type === 'keyup') {
+    keyCode = event.code;
+    event.preventDefault();
+  } else if (event.type === 'mouseup') {
+    if (!mouseDownTarget) {
+      return;
+    }
+    keyCode = mouseDownTarget;
+    event.preventDefault();
+  }
+
   if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
     KEYBOARD.handleUpShift();
   }
+
   if (keyCode === 'CapsLock') {
     KEYBOARD.handleUpCapsLock();
-    return false;
+    return;
   }
+
   if (keyCode === 'ControlLeft' || keyCode === 'ControlRight') {
     KEYBOARD.handleUpCtrl();
   }
+
   if (keyCode === 'AltLeft' || keyCode === 'AltRight') {
     KEYBOARD.handleUpAlt();
   }
+
   KEYBOARD.handleKeyUp(keyCode);
-  return false;
 }
 
 document.addEventListener('keydown', handleKeyDown);
 document.addEventListener('keyup', handleKeyUp);
+document.addEventListener('mousedown', handleKeyDown);
+document.addEventListener('mouseup', handleKeyUp);

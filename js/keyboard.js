@@ -82,12 +82,12 @@ class Keyboard {
     }
     if (this.isCapsLockPush) {
       this.keysSingle.forEach((key) => {
-        key.contentLowerCase();
+        key.contentToggleCase();
       });
       this.isCapsLockPush = false;
     } else {
       this.keysSingle.forEach((key) => {
-        key.contentUpperCase();
+        key.contentToggleCase();
       });
       this.isCapsLockPush = true;
     }
@@ -134,6 +134,7 @@ class Keyboard {
     const KEYS_ENTRIES = Object.entries(ALL_KEYS_OBJ);
     KEYS_ENTRIES.forEach((pairs) => {
       const [KEY, VALUE] = pairs;
+      VALUE.code = KEY;
       this.keysObj[KEY] = new Key(VALUE);
     });
   }
@@ -167,15 +168,58 @@ class Keyboard {
   }
 
   print(keyCode) {
+    const selectedStart = this.textarea.selectionStart;
+    const selectedEnd = this.textarea.selectionEnd;
+    const firstPartText = this.textarea.value.slice(0, selectedStart);
+    const secondPartText = this.textarea.value.slice(selectedStart);
     const KEY = this.keysObj[keyCode];
+    let letter;
+
+    const setCaret = (step) => {
+      let start = selectedStart + step;
+      let end = selectedEnd + step;
+      if (start < 0) {
+        start = 0;
+      } else if (start > this.textarea.value.length) {
+        start = this.textarea.value.length;
+      }
+
+      if (end < 0) {
+        end = 0;
+      } else if (end > this.textarea.value.length) {
+        end = this.textarea.value.length;
+      }
+      this.textarea.selectionStart = start;
+      this.textarea.selectionEnd = end;
+    };
+
+    if (keyCode === 'Delete') {
+      this.textarea.value = `${firstPartText}${secondPartText.slice(1)}`;
+      setCaret(0);
+      return false;
+    }
+
+    if (keyCode === 'Backspace') {
+      this.textarea.value = `${firstPartText.slice(0, -1)}${secondPartText}`;
+      setCaret(-1);
+      return false;
+    }
 
     if (keyCode === 'Space') {
-      this.textarea.value += ' ';
+      this.textarea.value = `${firstPartText} ${secondPartText}`;
+      setCaret(1);
+      return false;
+    }
+
+    if (keyCode === 'Tab') {
+      this.textarea.value = `${firstPartText}\t${secondPartText}`;
+      setCaret(1);
       return false;
     }
 
     if (keyCode === 'Enter') {
-      this.textarea.value += '\n';
+      this.textarea.value = `${firstPartText}\n${secondPartText}`;
+      setCaret(1);
       return false;
     }
 
@@ -183,20 +227,30 @@ class Keyboard {
       return false;
     }
 
+    if (KEY.container.classList.contains('key-arrow')) {
+      this.textarea.value = `${firstPartText}${KEY.container.textContent}${secondPartText}`;
+      return false;
+    }
+
     if (KEY.additional === undefined) {
       if (KEY.container.classList.contains('capitalize')) {
-        this.textarea.value += KEY.main.textContent.toUpperCase();
+        letter = KEY.main.textContent.toUpperCase();
       } else {
-        this.textarea.value += KEY.main.textContent;
+        letter = KEY.main.textContent;
       }
+      this.textarea.value = `${firstPartText}${letter}${secondPartText}`;
+      setCaret(1);
       return false;
     }
 
     if (KEY.main.classList.contains('additional')) {
-      this.textarea.value += KEY.additional.textContent;
+      letter = KEY.additional.textContent;
     } else {
-      this.textarea.value += KEY.main.textContent;
+      letter = KEY.main.textContent;
     }
+    this.textarea.value = `${firstPartText}${letter}${secondPartText}`;
+    setCaret(1);
+    return false;
   }
 
   getKeyboard() {

@@ -407,7 +407,7 @@ body {
   border-radius: 5px;
   box-shadow: 0px 0px 8px 6px rgba(34, 60, 80, 0.79);
   cursor: pointer;
-  transition: order 0.5s, justify-content 0.5s;
+  transition: box-shadow 0.2s, background-color 0.2s;
 }
 .key:hover {
   position: relative;
@@ -420,6 +420,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   flex-wrap: nowrap;
+  transition: order 0.5s, justify-content 0.3s;
 }
 .key__main {
   display: flex;
@@ -429,6 +430,7 @@ body {
   flex-wrap: nowrap;
   font-weight: 700;
   height: 100%;
+  transition: order 0.5s, justify-content 0.3s;
 }
 .key .main {
   display: flex;
@@ -463,6 +465,7 @@ body {
   border-radius: 5px;
   box-shadow: 0px 0px 8px 6px rgba(34, 60, 80, 0.79);
   cursor: pointer;
+  transition: box-shadow 0.2s, background-color 0.2S;
 }
 .key-arrow:hover,
 .key-optional:hover {
@@ -477,6 +480,7 @@ body {
   border-radius: 5px;
   box-shadow: 0px 0px 8px 6px rgba(34, 60, 80, 0.79);
   cursor: pointer;
+  transition: box-shadow 0.2s, background-color 0.2S;
 }
 .key-space:hover {
   position: relative;

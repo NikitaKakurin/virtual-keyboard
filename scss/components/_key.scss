@@ -11,17 +11,19 @@
     box-shadow: $key-shadow;
     cursor: pointer;
     @include key-hover();
-    transition: order 0.5s, justify-content 0.5s;
+    transition: box-shadow 0.2s, background-color 0.2s;
 
     &__additional{
         padding-left: 4px;
         @include flex($align:center, $j_content:flex-start);
+        transition: order 0.5s, justify-content 0.3s;
     }
 
     &__main{
         @include flex($align:center, $j_content:center);
         font-weight: 700;
         height: 100%;
+        transition: order 0.5s, justify-content 0.3s;
     }
 
     .main{        
@@ -49,6 +51,7 @@
     box-shadow: $key-shadow; 
     cursor: pointer;
     @include key-hover();
+    transition: box-shadow 0.2s, background-color 0.2S;
 }
 
 .key-space{
@@ -59,6 +62,7 @@
     box-shadow: $key-shadow;
     cursor: pointer;
     @include key-hover();
+    transition: box-shadow 0.2s, background-color 0.2S;
 }
 
 .key-XX{

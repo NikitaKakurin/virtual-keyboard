@@ -28,7 +28,7 @@ const ALL_KEYS_OBJ = {
     },
     ru: {
       main: '2',
-      additional: '5',
+      additional: '"',
     },
   },
   Digit3: {

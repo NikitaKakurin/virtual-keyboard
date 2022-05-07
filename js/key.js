@@ -5,6 +5,7 @@ class Key {
     this.options = options;
     this.lang = 'en';
     this.container = createOneElement('div', this.options.class);
+    this.container.dataset.code = this.options.code;
     this.isOptionalKey = !this.container.classList.contains('key');
     this.setContent(this.container);
   }
@@ -48,16 +49,6 @@ class Key {
 
   contentToggleCase() {
     this.container.classList.toggle('capitalize');
-    return false;
-  }
-
-  contentUpperCase() {
-    this.container.classList.add('capitalize');
-    return false;
-  }
-
-  contentLowerCase() {
-    this.container.classList.remove('capitalize');
     return false;
   }
 
