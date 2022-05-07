@@ -4,6 +4,9 @@ class Key {
   constructor(options) {
     this.options = options;
     this.lang = 'en';
+  }
+
+  initKey() {
     this.container = createOneElement('div', this.options.class);
     this.container.dataset.code = this.options.code;
     this.isOptionalKey = !this.container.classList.contains('key');
@@ -16,11 +19,11 @@ class Key {
       TARGET.textContent = this.options.main;
       return;
     }
-    if (this.options.en.additional !== undefined) {
-      this.additional = createOneElement('div', ['key__additional'], this.options.en.additional);
+    if (this.options[this.lang].additional !== undefined) {
+      this.additional = createOneElement('div', ['key__additional'], this.options[this.lang].additional);
       TARGET.append(this.additional);
     }
-    this.main = createOneElement('div', ['key__main'], this.options.en.main);
+    this.main = createOneElement('div', ['key__main'], this.options[this.lang].main);
     TARGET.append(this.main);
   }
 

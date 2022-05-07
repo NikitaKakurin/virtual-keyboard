@@ -7,11 +7,15 @@ class Keyboard {
     this.keyboardContainer = createOneElement('div', 'keyboard__container');
     this.textareaContainer = createOneElement('div', 'keyboard__blank');
     this.textarea = createOneElement('textarea', 'keyboard__textarea');
+    this.lang = 'en';
     this.textarea.id = 'blank';
     this.textarea.name = 'blank';
     this.textarea.value = '';
     this.textareaContainer.append(this.textarea);
     this.keyboardContainer.append(this.textareaContainer);
+  }
+
+  initKeyboard() {
     this.keyboard = createOneElement('div', 'keyboard');
     this.createRows();
     this.setKeysObj();
@@ -23,7 +27,6 @@ class Keyboard {
     this.isCtrlPush = false;
     this.isAltPush = false;
     this.keysArray = Object.values(this.keysObj);
-    this.lang = 'en';
     this.setSingleKey();
     this.setDoubleKey();
   }
@@ -136,6 +139,8 @@ class Keyboard {
       const [KEY, VALUE] = pairs;
       VALUE.code = KEY;
       this.keysObj[KEY] = new Key(VALUE);
+      this.keysObj[KEY].lang = this.lang;
+      this.keysObj[KEY].initKey();
     });
   }
 

@@ -3,6 +3,8 @@ import Keyboard from './js/keyboard.js';
 import createOneElement from './js/commonFunctions.js';
 
 const KEYBOARD = new Keyboard();
+KEYBOARD.lang = localStorage.getItem('lang')||'en';
+KEYBOARD.initKeyboard();
 const CONTAINER = createOneElement('div', 'container');
 CONTAINER.append(KEYBOARD.getKeyboard());
 document.body.append(CONTAINER);
@@ -84,7 +86,13 @@ function handleKeyUp(event) {
   KEYBOARD.handleKeyUp(keyCode);
 }
 
+function saveLang(event) {
+  event.preventDefault();
+  localStorage.setItem('lang', KEYBOARD.lang);
+}
+
 document.addEventListener('keydown', handleKeyDown);
 document.addEventListener('keyup', handleKeyUp);
 document.addEventListener('mousedown', handleKeyDown);
 document.addEventListener('mouseup', handleKeyUp);
+window.addEventListener('beforeunload', saveLang);
