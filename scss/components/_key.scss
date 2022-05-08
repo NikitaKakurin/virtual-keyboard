@@ -1,0 +1,100 @@
+.key{
+    @include flex($direction:column);
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    color: #f4f4f2;
+    background-color: $key-bgColor;
+    border-radius: $key-border-radius;
+    box-shadow: $key-shadow;
+    cursor: pointer;
+    @include key-hover();
+    transition: box-shadow 0.2s, background-color 0.2s;
+
+    &__additional{
+        padding-left: 4px;
+        @include flex($align:center, $j_content:flex-start);
+        transition: order 0.5s, justify-content 0.3s;
+    }
+
+    &__main{
+        @include flex($align:center, $j_content:center);
+        font-weight: 700;
+        height: 100%;
+        transition: order 0.5s, justify-content 0.3s;
+    }
+
+    .main{        
+        @include flex($align:center, $j_content:center);
+        font-weight: 700;
+        order:2;
+    }
+
+    .additional{
+        @include flex($align:center, $j_content:flex-start);
+        padding-left: 4px;
+        order:-1;
+    }
+}
+
+.key-arrow,
+.key-optional{
+    height: 40px;
+    @include flex($j_content: center, $align:center);
+    background-color: $key-optional-bgColor;
+    color: #ffffff;
+    text-align: center; 
+    border-radius: $key-border-radius;  
+    box-shadow: $key-shadow; 
+    cursor: pointer;
+    @include key-hover();
+    transition: box-shadow 0.2s, background-color 0.2S;
+}
+
+.key-space{
+    height: $key-height;
+    width: 314px;
+    background-color: $key-bgColor;
+    border-radius: $key-border-radius;
+    box-shadow: $key-shadow;
+    cursor: pointer;
+    @include key-hover();
+    transition: box-shadow 0.2s, background-color 0.2S;
+}
+
+.key-XX{
+    width: 100px;
+}
+
+.key-XL{
+    width: 84px;
+}
+
+.key-L{
+    width: 60px;
+}
+
+.key-M{
+    width: 52px;
+}
+
+.key-S{
+    width: 40px;
+}
+
+.key-push{
+    @include key-push($key-bgColor, 10%);
+}
+
+.key-optional-push{
+    @include key-push($key-optional-bgColor, 30%);
+}
+
+@keyframes key-hover {
+    from {top: 0px;}
+    to {top: -2px;}
+}
+
+.capitalize{
+    text-transform: capitalize;
+}

@@ -1,0 +1,14 @@
+.keyboard{
+    width: 100%;
+    @include flex($direction:column);
+    row-gap: 10px;
+    padding: 10px 10px;
+    background-color: #888888;
+}
+
+.keyboard__row{
+    @include flex($j_content:space-between);
+    column-gap:10px
+}
+
+

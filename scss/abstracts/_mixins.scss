@@ -1,0 +1,24 @@
+@mixin flex($direction:row, $align:normal, $j_content:normal, $wrap: nowrap) {
+    display: flex;
+    flex-direction: $direction;
+    align-items: $align;
+    justify-content: $j_content;
+    flex-wrap: $wrap;
+}
+
+@mixin key-hover {
+    &:hover{
+        position: relative;
+        animation: key-hover 0.3s ease infinite;
+    }
+}
+
+@mixin key-push ($bgColor, $percent) {
+    &:hover{
+        position: static;
+        animation: none;
+    }
+        box-shadow: $key-shadow-push;
+        background-color: darken($color:$bgColor, $amount: $percent);
+    
+}
