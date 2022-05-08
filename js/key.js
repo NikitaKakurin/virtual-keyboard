@@ -56,10 +56,20 @@ class Key {
   }
 
   push() {
+    if (this.container.classList.contains('key-optional')
+    || this.container.classList.contains('key-arrow')) {
+      this.container.classList.add('key-optional-push');
+      return;
+    }
     this.container.classList.add('key-push');
   }
 
   up() {
+    if (this.container.classList.contains('key-optional')
+    || this.container.classList.contains('key-arrow')) {
+      this.container.classList.remove('key-optional-push');
+      return;
+    }
     this.container.classList.remove('key-push');
   }
 

@@ -37,12 +37,11 @@
     }
 }
 
-
 .key-arrow,
 .key-optional{
     height: 40px;
     @include flex($j_content: center, $align:center);
-    background-color: #1c1c1c;
+    background-color: $key-optional-bgColor;
     color: #ffffff;
     text-align: center; 
     border-radius: $key-border-radius;  
@@ -84,11 +83,11 @@
 }
 
 .key-push{
-    @include key-push();
-    &:hover{
-        position: static;
-        animation: none;
-    }
+    @include key-push($key-bgColor, 10%);
+}
+
+.key-optional-push{
+    @include key-push($key-optional-bgColor, 30%);
 }
 
 @keyframes key-hover {
