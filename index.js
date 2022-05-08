@@ -1,4 +1,3 @@
-import ALL_KEYS_OBJ from './js/allKeysObj.js';
 import Keyboard from './js/keyboard.js';
 import createOneElement from './js/commonFunctions.js';
 
@@ -10,13 +9,11 @@ const RULES = createOneElement('div', 'rules');
 const SYSTEM_INFO = createOneElement('div', 'rules__system');
 const CHANGE_LANG_KEYS = createOneElement('div', 'rules__lang');
 SYSTEM_INFO.innerText = 'Клавиатура создана в операционной системе Windows';
-CHANGE_LANG_KEYS.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
+CHANGE_LANG_KEYS.innerText = 'Для переключения языка комбинация: ctrl + alt';
 RULES.append(SYSTEM_INFO, CHANGE_LANG_KEYS);
 CONTAINER.append(KEYBOARD.getKeyboard(), RULES);
 document.body.append(CONTAINER);
 let mouseDownTarget = null;
-
-console.log(KEYBOARD.textarea.rows);
 
 function handleKeyDown(event) {
   let keyCode;
