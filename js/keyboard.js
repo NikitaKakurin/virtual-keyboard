@@ -13,6 +13,7 @@ class Keyboard {
     this.textarea.value = '';
     this.textareaContainer.append(this.textarea);
     this.keyboardContainer.append(this.textareaContainer);
+    this.copyBuffer = '';
   }
 
   initKeyboard() {
@@ -173,40 +174,71 @@ class Keyboard {
   }
 
   print(keyCode) {
+    this.textarea.focus();
     const selectedStart = this.textarea.selectionStart;
     const selectedEnd = this.textarea.selectionEnd;
     const firstPartText = this.textarea.value.slice(0, selectedStart);
-    const secondPartText = this.textarea.value.slice(selectedStart);
+    const secondPartText = this.textarea.value.slice(selectedEnd);
+    const selectedPartText = this.textarea.value.slice(selectedStart, selectedEnd);
     const KEY = this.keysObj[keyCode];
     let letter;
 
     const setCaret = (step) => {
       let start = selectedStart + step;
-      let end = selectedEnd + step;
       if (start < 0) {
         start = 0;
       } else if (start > this.textarea.value.length) {
         start = this.textarea.value.length;
       }
 
-      if (end < 0) {
-        end = 0;
-      } else if (end > this.textarea.value.length) {
-        end = this.textarea.value.length;
-      }
       this.textarea.selectionStart = start;
-      this.textarea.selectionEnd = end;
+      this.textarea.selectionEnd = start;
     };
 
     if (keyCode === 'Delete') {
-      this.textarea.value = `${firstPartText}${secondPartText.slice(1)}`;
+      if (selectedPartText.length !== 0) {
+        this.textarea.value = `${firstPartText}${secondPartText}`;
+      } else {
+        this.textarea.value = `${firstPartText}${secondPartText.slice(1)}`;
+      }
+
       setCaret(0);
       return false;
     }
 
     if (keyCode === 'Backspace') {
-      this.textarea.value = `${firstPartText.slice(0, -1)}${secondPartText}`;
-      setCaret(-1);
+      if (selectedPartText.length !== 0) {
+        this.textarea.value = `${firstPartText}${secondPartText}`;
+        setCaret(0);
+      } else {
+        this.textarea.value = `${firstPartText.slice(0, -1)}${secondPartText}`;
+        setCaret(-1);
+      }
+
+      return false;
+    }
+
+    if (keyCode === 'KeyA' && this.isCtrlPush) {
+      this.textarea.selectionStart = 0;
+      this.textarea.selectionEnd = this.textarea.value.length;
+      return false;
+    }
+
+    if (keyCode === 'KeyC' && this.isCtrlPush) {
+      this.copyBuffer = selectedPartText;
+      return false;
+    }
+
+    if (keyCode === 'KeyX' && this.isCtrlPush) {
+      this.copyBuffer = selectedPartText;
+      this.textarea.value = `${firstPartText}${secondPartText}`;
+      setCaret(0);
+      return false;
+    }
+
+    if (keyCode === 'KeyV' && this.isCtrlPush) {
+      this.textarea.value = `${firstPartText}${this.copyBuffer}${secondPartText}`;
+      setCaret(this.copyBuffer.length);
       return false;
     }
 
@@ -234,6 +266,7 @@ class Keyboard {
 
     if (KEY.container.classList.contains('key-arrow')) {
       this.textarea.value = `${firstPartText}${KEY.container.textContent}${secondPartText}`;
+      setCaret(1);
       return false;
     }
 

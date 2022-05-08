@@ -3,10 +3,16 @@ import Keyboard from './js/keyboard.js';
 import createOneElement from './js/commonFunctions.js';
 
 const KEYBOARD = new Keyboard();
-KEYBOARD.lang = localStorage.getItem('lang')||'en';
+KEYBOARD.lang = localStorage.getItem('lang') || 'en';
 KEYBOARD.initKeyboard();
 const CONTAINER = createOneElement('div', 'container');
-CONTAINER.append(KEYBOARD.getKeyboard());
+const RULES = createOneElement('div', 'rules');
+const SYSTEM_INFO = createOneElement('div', 'rules__system');
+const CHANGE_LANG_KEYS = createOneElement('div', 'rules__lang');
+SYSTEM_INFO.innerText = 'Клавиатура создана в операционной системе Windows';
+CHANGE_LANG_KEYS.innerText = 'Для переключения языка комбинация: левыe ctrl + alt';
+RULES.append(SYSTEM_INFO, CHANGE_LANG_KEYS);
+CONTAINER.append(KEYBOARD.getKeyboard(), RULES);
 document.body.append(CONTAINER);
 let mouseDownTarget = null;
 
