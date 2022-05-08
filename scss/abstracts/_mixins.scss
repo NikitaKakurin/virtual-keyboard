@@ -13,12 +13,12 @@
     }
 }
 
-@mixin key-push {
+@mixin key-push () {
     &:hover{
         position: static;
         animation: none;
     }
         box-shadow: $key-shadow-push;
-        background-color: darken($color:$key-bgcolor, $amount: 10%);
+        background-color: darken($color:$key-bgColor, $amount: 10%);
     
 }

@@ -6,7 +6,7 @@
     height: 40px;
     border-radius: 5px;
     color: #f4f4f2;
-    background-color: $key-bgcolor;
+    background-color: $key-bgColor;
     border-radius: $key-border-radius;
     box-shadow: $key-shadow;
     cursor: pointer;
@@ -57,7 +57,7 @@
 .key-space{
     height: $key-height;
     width: 314px;
-    background-color: grey;
+    background-color: $key-bgColor;
     border-radius: $key-border-radius;
     box-shadow: $key-shadow;
     cursor: pointer;
