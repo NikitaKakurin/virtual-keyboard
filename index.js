@@ -17,10 +17,8 @@ let mouseDownTarget = null;
 
 function handleKeyDown(event) {
   let keyCode;
-
   if (event.type === 'keydown') {
     keyCode = event.code;
-    event.preventDefault();
   } else if (event.type === 'mousedown') {
     const keyContainer = event.target.closest('[data-code]');
     if (!keyContainer) {
@@ -28,8 +26,9 @@ function handleKeyDown(event) {
     }
     keyCode = keyContainer.dataset.code;
     mouseDownTarget = keyCode;
-    event.preventDefault();
   }
+
+  event.preventDefault();
 
   if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
     KEYBOARD.handlePushShift();
@@ -60,15 +59,14 @@ function handleKeyUp(event) {
 
   if (event.type === 'keyup') {
     keyCode = event.code;
-    event.preventDefault();
   } else if (event.type === 'mouseup') {
     if (!mouseDownTarget) {
       return;
     }
     keyCode = mouseDownTarget;
-    event.preventDefault();
   }
 
+  event.preventDefault();
   if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
     KEYBOARD.handleUpShift();
   }
