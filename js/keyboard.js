@@ -7,11 +7,13 @@ class Keyboard {
     this.keyboardContainer = createOneElement('div', 'keyboard__container');
     this.textareaContainer = createOneElement('div', 'keyboard__blank');
     this.textarea = createOneElement('textarea', 'keyboard__textarea');
+    this.textareaWrapper = createOneElement('div', 'keyboard__textarea_wrapper');
     this.lang = 'en';
     this.textarea.id = 'blank';
     this.textarea.name = 'blank';
     this.textarea.value = '';
-    this.textareaContainer.append(this.textarea);
+    this.textareaWrapper.append(this.textarea);
+    this.textareaContainer.append(this.textareaWrapper);
     this.keyboardContainer.append(this.textareaContainer);
     this.copyBuffer = '';
   }
@@ -84,15 +86,13 @@ class Keyboard {
     if (!this.isCapsLockUp) {
       return false;
     }
+
+    this.keysSingle.forEach((key) => {
+      key.contentToggleCase();
+    });
     if (this.isCapsLockPush) {
-      this.keysSingle.forEach((key) => {
-        key.contentToggleCase();
-      });
       this.isCapsLockPush = false;
     } else {
-      this.keysSingle.forEach((key) => {
-        key.contentToggleCase();
-      });
       this.isCapsLockPush = true;
     }
     this.isCapsLockUp = false;
@@ -104,19 +104,19 @@ class Keyboard {
   }
 
   handlePushShift() {
-    if (!this.isShiftPush) {
-      this.keysSingle.forEach((key) => {
-        key.contentToggleCase();
-      });
-      this.keysDouble.forEach((key) => {
-        key.replaceMain();
-      });
+    if (this.isShiftPush) {
+      return;
     }
+    this.changeKeyByShift();
     this.isShiftPush = true;
   }
 
   handleUpShift() {
     this.isShiftPush = false;
+    this.changeKeyByShift();
+  }
+
+  changeKeyByShift() {
     this.keysSingle.forEach((key) => {
       key.contentToggleCase();
     });
@@ -148,43 +148,43 @@ class Keyboard {
   createRows() {
     this.rows = [];
     for (let index = 0; index < 5; index += 1) {
-      const row = createOneElement('div', 'keyboard__row');
-      this.rows.push(row);
+      const ROW = createOneElement('div', 'keyboard__row');
+      this.rows.push(ROW);
     }
     this.keyboard.append(...this.rows);
   }
 
   insertKeys() {
-    const values = Object.values(this.keysObj);
-    const limit = values.length;
+    const VALUES = Object.values(this.keysObj);
+    const LIMIT = VALUES.length;
 
-    for (let index = 0; index < limit; index += 1) {
+    for (let index = 0; index < LIMIT; index += 1) {
       if (index < 14) {
-        this.rows[0].append(values[index].getKey());
+        this.rows[0].append(VALUES[index].getKey());
       } else if (index < 28) {
-        this.rows[1].append(values[index].getKey());
+        this.rows[1].append(VALUES[index].getKey());
       } else if (index < 42) {
-        this.rows[2].append(values[index].getKey());
+        this.rows[2].append(VALUES[index].getKey());
       } else if (index < 55) {
-        this.rows[3].append(values[index].getKey());
+        this.rows[3].append(VALUES[index].getKey());
       } else {
-        this.rows[4].append(values[index].getKey());
+        this.rows[4].append(VALUES[index].getKey());
       }
     }
   }
 
   print(keyCode) {
     this.textarea.focus();
-    const selectedStart = this.textarea.selectionStart;
-    const selectedEnd = this.textarea.selectionEnd;
-    const firstPartText = this.textarea.value.slice(0, selectedStart);
-    const secondPartText = this.textarea.value.slice(selectedEnd);
-    const selectedPartText = this.textarea.value.slice(selectedStart, selectedEnd);
+    const SELECTED_START = this.textarea.selectionStart;
+    const SELECTED_END = this.textarea.selectionEnd;
+    const FIRST_PART_TEXT = this.textarea.value.slice(0, SELECTED_START);
+    const SECOND_PART_TEXT = this.textarea.value.slice(SELECTED_END);
+    const SELECTED_PART_TEXT = this.textarea.value.slice(SELECTED_START, SELECTED_END);
     const KEY = this.keysObj[keyCode];
     let letter;
 
     const setCaret = (step) => {
-      let start = selectedStart + step;
+      let start = SELECTED_START + step;
       if (start < 0) {
         start = 0;
       } else if (start > this.textarea.value.length) {
@@ -196,10 +196,10 @@ class Keyboard {
     };
 
     if (keyCode === 'Delete') {
-      if (selectedPartText.length !== 0) {
-        this.textarea.value = `${firstPartText}${secondPartText}`;
+      if (SELECTED_PART_TEXT.length !== 0) {
+        this.textarea.value = `${FIRST_PART_TEXT}${SECOND_PART_TEXT}`;
       } else {
-        this.textarea.value = `${firstPartText}${secondPartText.slice(1)}`;
+        this.textarea.value = `${FIRST_PART_TEXT}${SECOND_PART_TEXT.slice(1)}`;
       }
 
       setCaret(0);
@@ -207,14 +207,36 @@ class Keyboard {
     }
 
     if (keyCode === 'Backspace') {
-      if (selectedPartText.length !== 0) {
-        this.textarea.value = `${firstPartText}${secondPartText}`;
+      if (SELECTED_PART_TEXT.length !== 0) {
+        this.textarea.value = `${FIRST_PART_TEXT}${SECOND_PART_TEXT}`;
         setCaret(0);
       } else {
-        this.textarea.value = `${firstPartText.slice(0, -1)}${secondPartText}`;
+        this.textarea.value = `${FIRST_PART_TEXT.slice(0, -1)}${SECOND_PART_TEXT}`;
         setCaret(-1);
       }
 
+      return false;
+    }
+
+    if (keyCode === 'Space') {
+      this.textarea.value = `${FIRST_PART_TEXT} ${SECOND_PART_TEXT}`;
+      setCaret(1);
+      return false;
+    }
+
+    if (keyCode === 'Tab') {
+      this.textarea.value = `${FIRST_PART_TEXT}\t${SECOND_PART_TEXT}`;
+      setCaret(1);
+      return false;
+    }
+
+    if (keyCode === 'Enter') {
+      this.textarea.value = `${FIRST_PART_TEXT}\n${SECOND_PART_TEXT}`;
+      setCaret(1);
+      return false;
+    }
+
+    if (KEY.container.classList.contains('key-optional')) {
       return false;
     }
 
@@ -225,47 +247,42 @@ class Keyboard {
     }
 
     if (keyCode === 'KeyC' && this.isCtrlPush) {
-      this.copyBuffer = selectedPartText;
+      navigator.clipboard.writeText(SELECTED_PART_TEXT).then(() => {
+        this.copyBuffer = SELECTED_PART_TEXT;
+      }, () => {
+        this.copyBuffer = SELECTED_PART_TEXT;
+      });
       return false;
     }
 
     if (keyCode === 'KeyX' && this.isCtrlPush) {
-      this.copyBuffer = selectedPartText;
-      this.textarea.value = `${firstPartText}${secondPartText}`;
-      setCaret(0);
+      navigator.clipboard.writeText(SELECTED_PART_TEXT).then(() => {
+        this.textarea.value = `${FIRST_PART_TEXT}${SECOND_PART_TEXT}`;
+        this.copyBuffer = SELECTED_PART_TEXT;
+        setCaret(0);
+      }, () => {
+        this.copyBuffer = SELECTED_PART_TEXT;
+        this.textarea.value = `${FIRST_PART_TEXT}${SECOND_PART_TEXT}`;
+        setCaret(0);
+      });
+
       return false;
     }
 
     if (keyCode === 'KeyV' && this.isCtrlPush) {
-      this.textarea.value = `${firstPartText}${this.copyBuffer}${secondPartText}`;
-      setCaret(this.copyBuffer.length);
-      return false;
-    }
+      navigator.clipboard.readText(SELECTED_PART_TEXT).then((text) => {
+        this.textarea.value = `${FIRST_PART_TEXT}${text}${SECOND_PART_TEXT}`;
+        setCaret(text.length);
+      }, () => {
+        this.textarea.value = `${FIRST_PART_TEXT}${this.copyBuffer}${SECOND_PART_TEXT}`;
+        setCaret(this.copyBuffer.length);
+      });
 
-    if (keyCode === 'Space') {
-      this.textarea.value = `${firstPartText} ${secondPartText}`;
-      setCaret(1);
-      return false;
-    }
-
-    if (keyCode === 'Tab') {
-      this.textarea.value = `${firstPartText}\t${secondPartText}`;
-      setCaret(1);
-      return false;
-    }
-
-    if (keyCode === 'Enter') {
-      this.textarea.value = `${firstPartText}\n${secondPartText}`;
-      setCaret(1);
-      return false;
-    }
-
-    if (KEY.container.classList.contains('key-optional')) {
       return false;
     }
 
     if (KEY.container.classList.contains('key-arrow')) {
-      this.textarea.value = `${firstPartText}${KEY.container.textContent}${secondPartText}`;
+      this.textarea.value = `${FIRST_PART_TEXT}${KEY.container.textContent}${SECOND_PART_TEXT}`;
       setCaret(1);
       return false;
     }
@@ -276,7 +293,7 @@ class Keyboard {
       } else {
         letter = KEY.main.textContent;
       }
-      this.textarea.value = `${firstPartText}${letter}${secondPartText}`;
+      this.textarea.value = `${FIRST_PART_TEXT}${letter}${SECOND_PART_TEXT}`;
       setCaret(1);
       return false;
     }
@@ -286,7 +303,7 @@ class Keyboard {
     } else {
       letter = KEY.main.textContent;
     }
-    this.textarea.value = `${firstPartText}${letter}${secondPartText}`;
+    this.textarea.value = `${FIRST_PART_TEXT}${letter}${SECOND_PART_TEXT}`;
     setCaret(1);
     return false;
   }
