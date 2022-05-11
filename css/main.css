@@ -348,7 +348,7 @@ body {
   align-items: flex-end;
   justify-content: center;
   flex-wrap: nowrap;
-  height: 100vh;
+  min-height: 100vh;
   background-image: url(../pexels-aaron-ulsh-2882660.jpg);
   background-size: cover;
 }

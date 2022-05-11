@@ -5,7 +5,7 @@ html{
 body{
     font-size: 1.6rem;
     @include flex($j_content:center, $align: flex-end);
-    height: 100vh;
+    min-height: 100vh;
     background-image: url(../pexels-aaron-ulsh-2882660.jpg);
     background-size: cover;
 }
