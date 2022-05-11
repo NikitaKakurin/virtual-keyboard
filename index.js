@@ -30,6 +30,10 @@ function handleKeyDown(event) {
 
   event.preventDefault();
 
+  if (!KEYBOARD.keysObj[keyCode]) {
+    return;
+  }
+
   if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
     KEYBOARD.handlePushShift();
   }
@@ -67,6 +71,11 @@ function handleKeyUp(event) {
   }
 
   event.preventDefault();
+
+  if (!KEYBOARD.keysObj[keyCode]) {
+    return;
+  }
+
   if (keyCode === 'ShiftLeft' || keyCode === 'ShiftRight') {
     KEYBOARD.handleUpShift();
   }
